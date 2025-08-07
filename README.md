@@ -81,9 +81,11 @@ These zip files contain the complete self-contained application and can be distr
 ## Application Features
 
 - Simple Hello World GUI
-- Interactive button with feedback
-- Responsive layout
-- Modern styling
+- Interactive "Click Me!" button with feedback
+- **NEW: Calculator Launcher** - Button to launch system calculator
+- Cross-platform calculator support (macOS, Windows, Linux)
+- Responsive layout with modern styling
+- Error handling for external application launches
 
 ## Notes
 

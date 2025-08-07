@@ -1,13 +1,16 @@
 package com.example.helloworld;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import java.io.IOException;
 
 /**
  * JavaFX Hello World Application
@@ -41,11 +44,32 @@ public class HelloWorldApp extends Application {
             feedbackLabel.setText("Button clicked! JavaFX is working perfectly.");
         });
 
+        // Create calculator button
+        Button calculatorButton = new Button("Open Calculator");
+        calculatorButton.setStyle("-fx-font-size: 14px; -fx-background-color: #28A745; -fx-text-fill: white; -fx-padding: 10 20 10 20;");
+        
+        // Create a label to show calculator launch feedback
+        Label calculatorFeedbackLabel = new Label("");
+        calculatorFeedbackLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #DC3545;");
+
+        // Set calculator button action
+        calculatorButton.setOnAction(e -> {
+            try {
+                launchCalculator();
+                calculatorFeedbackLabel.setText("Calculator launched successfully!");
+                calculatorFeedbackLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #28A745;");
+            } catch (Exception ex) {
+                calculatorFeedbackLabel.setText("Failed to launch calculator: " + ex.getMessage());
+                calculatorFeedbackLabel.setStyle("-fx-font-size: 12px; -fx-text-fill: #DC3545;");
+            }
+        });
+
         // Create the layout container
-        VBox root = new VBox(20);
+        VBox root = new VBox(15);
         root.setAlignment(Pos.CENTER);
         root.setPadding(new Insets(40));
-        root.getChildren().addAll(helloLabel, subtitleLabel, actionButton, feedbackLabel);
+        root.getChildren().addAll(helloLabel, subtitleLabel, actionButton, feedbackLabel, 
+                                 calculatorButton, calculatorFeedbackLabel);
         
         // Set background color
         root.setStyle("-fx-background-color: #F8F9FA;");
@@ -61,6 +85,36 @@ public class HelloWorldApp extends Application {
         
         // Show the stage
         primaryStage.show();
+    }
+
+    /**
+     * Launches the system calculator application
+     * @throws IOException if the calculator cannot be launched
+     */
+    private void launchCalculator() throws IOException {
+        String os = System.getProperty("os.name").toLowerCase();
+        ProcessBuilder processBuilder;
+        
+        if (os.contains("mac")) {
+            // macOS Calculator
+            processBuilder = new ProcessBuilder("open", "-a", "Calculator");
+        } else if (os.contains("win")) {
+            // Windows Calculator
+            processBuilder = new ProcessBuilder("calc.exe");
+        } else {
+            // Linux/Unix Calculator (try common calculator applications)
+            try {
+                processBuilder = new ProcessBuilder("gnome-calculator");
+            } catch (Exception e) {
+                try {
+                    processBuilder = new ProcessBuilder("kcalc");
+                } catch (Exception e2) {
+                    processBuilder = new ProcessBuilder("xcalc");
+                }
+            }
+        }
+        
+        processBuilder.start();
     }
 
     /**
