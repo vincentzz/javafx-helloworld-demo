@@ -41,6 +41,13 @@
             <artifactId>javafx-fxml</artifactId>
             <version>${javafx.version}</version>
         </dependency>
+        
+        <!-- Example non-modular dependency -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+            <version>3.14.0</version>
+        </dependency>
     </dependencies>
     
     <build>
@@ -110,6 +117,51 @@
                         </executions>
                     </plugin>
                     
+                    <!-- ModiTect Plugin - Add module descriptors to non-modular JARs -->
+                    <plugin>
+                        <groupId>org.moditect</groupId>
+                        <artifactId>moditect-maven-plugin</artifactId>
+                        <version>1.0.0.RC2</version>
+                        <executions>
+                            <execution>
+                                <id>add-module-infos</id>
+                                <phase>prepare-package</phase>
+                                <goals>
+                                    <goal>add-module-info</goal>
+                                </goals>
+                                <configuration>
+                                    <outputDirectory>${project.build.directory}/modules</outputDirectory>
+                                    <modules>
+                                        <module>
+                                            <artifact>
+                                                <groupId>org.apache.commons</groupId>
+                                                <artifactId>commons-lang3</artifactId>
+                                            </artifact>
+                                            <moduleInfoSource>
+                                                module org.apache.commons.lang3 {
+                                                    exports org.apache.commons.lang3;
+                                                    exports org.apache.commons.lang3.builder;
+                                                    exports org.apache.commons.lang3.concurrent;
+                                                    exports org.apache.commons.lang3.event;
+                                                    exports org.apache.commons.lang3.exception;
+                                                    exports org.apache.commons.lang3.function;
+                                                    exports org.apache.commons.lang3.math;
+                                                    exports org.apache.commons.lang3.mutable;
+                                                    exports org.apache.commons.lang3.reflect;
+                                                    exports org.apache.commons.lang3.stream;
+                                                    exports org.apache.commons.lang3.text;
+                                                    exports org.apache.commons.lang3.time;
+                                                    exports org.apache.commons.lang3.tuple;
+                                                    exports org.apache.commons.lang3.util;
+                                                }
+                                            </moduleInfoSource>
+                                        </module>
+                                    </modules>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                    
                     <!-- JavaFX jlink Plugin -->
                     <plugin>
                         <groupId>org.openjfx</groupId>
@@ -124,6 +176,11 @@
                             <bindServices>true</bindServices>
                             <launcher>${app.name}</launcher>
                             <jlinkImageName>javafx-helloworld</jlinkImageName>
+                            <!-- Use modularized dependencies -->
+                            <modulePath>
+                                <path>${project.build.directory}/modules</path>
+                                <path>${project.build.directory}/lib</path>
+                            </modulePath>
                         </configuration>
                         <executions>
                             <execution>

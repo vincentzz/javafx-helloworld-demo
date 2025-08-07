@@ -87,8 +87,17 @@ These zip files contain the complete self-contained application and can be distr
 - Responsive layout with modern styling
 - Error handling for external application launches
 
+## Working with Non-Modular Dependencies
+
+This project demonstrates how to use non-modular JAR dependencies with jlink. See [NON_MODULAR_DEPENDENCIES.md](NON_MODULAR_DEPENDENCIES.md) for detailed instructions on:
+
+- Using the ModiTect Maven Plugin to add module descriptors to non-modular JARs
+- Configuring jlink to work with legacy libraries
+- Alternative solutions for complex dependency scenarios
+
 ## Notes
 
 - The generated executables are self-contained and don't require Java to be installed on the target system
 - The jlink tool creates a custom JRE with only the modules your application needs, resulting in smaller distribution size
 - For cross-platform builds, you'll need the target platform's JDK
+- Non-modular dependencies are supported via the ModiTect plugin (see documentation above)

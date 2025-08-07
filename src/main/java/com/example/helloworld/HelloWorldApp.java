@@ -27,8 +27,9 @@ public class HelloWorldApp extends Application {
         Label helloLabel = new Label("Hello, World!");
         helloLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2E86AB;");
 
-        // Create a subtitle label
-        Label subtitleLabel = new Label("This is a JavaFX application built with Java 21");
+        // Create a subtitle label using Apache Commons Lang3
+        String subtitle = org.apache.commons.lang3.StringUtils.capitalize("this is a javaFX application built with java 21");
+        Label subtitleLabel = new Label(subtitle);
         subtitleLabel.setStyle("-fx-font-size: 14px; -fx-text-fill: #666666;");
 
         // Create a button
